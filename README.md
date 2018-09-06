@@ -35,17 +35,17 @@ creating a nice 2018 blog with backend as django2 and python3
 
 5. Run the server
 
-```
-python manage.py runserver
-```
+	```
+	python manage.py runserver
+	```
 
 **NOTE:** ignore any warnings and locate to [this](http://127.0.0.1:8000) url.
 
 6. Create Super User
 
-```
-python manage.py createsuperuser
-```
+	```
+	python manage.py createsuperuser
+	```
 
 Enter the **username** and **password** and email (optional) for django-admin site. This can be done while server is running, once done locate to [this]http://127.0.0.1:8000admin) url and enter your details.
 
@@ -120,7 +120,7 @@ class Post(models.Model):
 	title = models.CharField(max_length=200)
 	content = models.TextField()
 	timestamp = models.DateTimeField(auto_now_add=True)
-	upadted = models.DateTimeField(auto_now=True)
+	updated = models.DateTimeField(auto_now=True)
 
 	def __str__(self):
 		return self.title
@@ -142,3 +142,110 @@ which is used here and we have made four fields
 # Model To Admin
 Head onto Django Admin [Docs](https://docs.djangoproject.com/en/2.1/ref/contrib/admin/)
 and check out how admin works in django
+
+For actually registering our Post model into the admin site we need to do that using
+```admin.site.register``` inside ```posts/admin.py```
+
+```
+from django.contrib import admin
+
+from .models import Post
+
+admin.site.register(Post)
+```
+
+So what we did is import our Post Model and then register it with admin.
+
+Run the server again and head to [admin](http://127.0.0.1:8000/admin) site and you 
+should see the ```Post``` Model, click on it and create few posts save them.
+
+You will find that a list of posts appear with the heading as the title of the post
+which is due to the ```__str__``` method inside ```model.py```
+
+# Customizing Admin
+In this section we will add some features to our admin site for Post model. For that we
+need to create a [ModelAdmin](https://docs.djangoproject.com/en/2.1/ref/contrib/admin/#modeladmin-objects)
+
+Open **posts/admin.py** file again and create a new ModelAdmin class
+
+```
+from django.contrib import admin
+
+from .models import Post
+
+class PostModelAdmin(admin.ModelAdmin):
+	class Meta:
+		model = Post
+
+
+admin.site.register(Post, PostModelAdmin)
+```
+
+This won't change anything on admin site, but using ModelAdmin [options](https://docs.djangoproject.com/en/2.1/ref/contrib/admin/#modeladmin-options) would give us a whole lot of features.
+
+We will add ```list_display``` feature that displays the fields inside the list/set into
+the display of Model.
+
+```
+...
+class PostModelAdmin(admin.ModelAdmin):
+	list_display = ('title', 'timestamp')
+	
+	class Meta:
+		model = Post
+...
+```
+
+Notice how ```title``` field on Post Model page is clickable, we can make other fields
+also clickable using ```list_display_links```
+
+```
+class PostModelAdmin(admin.ModelAdmin):
+	list_display = ('title', 'timestamp', 'updated')
+	list_display_links = ('title', 'timestamp')
+
+	class Meta:
+		model = Post
+```
+
+Again our model admin site is changed a bit.
+
+There is also a ```list_filter``` feature that adds a filter onto right side with
+the filter fields provided
+
+```
+	...
+	list_filter = ('updated', 'timestamp')
+	...
+```
+
+We can add a search field onto Model Site using ```search_fields``` feature like this
+
+```
+search_fields = ('title', 'content')
+```
+
+Enter the title or content of a post and search, you will get the results
+
+One more very nice feature is quick editable using ```list_editable```
+
+```
+list_display_links = ('timestamp',)
+list_editable = ('title',)
+```
+
+Since you added ```title``` to ```list_editable``` we need to remove the it from 
+```list_display_links``` this makes sense cause we cannot make one field clickable as 
+well as editable.
+
+To change the model for example if we want to change the max_length paramter to 120 
+then we would simply make changes in the file 
+```title = models.CharField(max_length=120)``` but we need to do one more thing.
+
+After making changes to fields in models we need to run ```makemigrations``` command
+and then ```migrate```
+
+```
+python manage.py makemigrations
+python manage.py migrate
+```
