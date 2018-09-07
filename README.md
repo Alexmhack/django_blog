@@ -249,3 +249,84 @@ and then ```migrate```
 python manage.py makemigrations
 python manage.py migrate
 ```
+
+If you have any questions regarding what we have done so far let me know at [CodeMentor](http://www.codementor.tk)
+
+# [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete)
+1. Create
+2. Retrieve
+3. Update
+4. Delete
+
+Creating something refers to **CREATE**. Retrieving data is **RETRIEVE**. Updating the
+existing data is **UPDATE** and lastly deleting the data comes under **DELETE**
+
+In this section we will be creating **CRUD** functionality for our blog just like how
+**Django Admin** works, our **CRUD** won't be as advanced and featureful as Django Admin
+is but something that fulfills our requirements.
+
+We are gonna create views for our CRUD functionality inside ```views.py```
+We will be starting with [function based views](https://docs.djangoproject.com/en/2.1/topics/http/views/)
+
+A simple function based view can be created through
+
+**posts/view.py**
+```
+from django.shortcuts import render
+from django.http import HttpResponse
+
+def posts_home(request):
+	return HttpResponse("<h1>Django Blog Home Page</h1>")
+
+```
+
+So we have a simple python function that returns a ```http.HttpResponse(html)```
+object which will be shown on the url that is mapped with this view, more on that later.
+
+Function based views are simple functions that needs to return some response everytime
+the function is called. So our function takes in a argument ```request``` and it simply
+returns and ```HttpResponse``` object with simple html inside it, this html will be 
+rendered by browser so we don't need to worry about that.
+
+Okay! We have our view ready now we want a url for this particular view.
+
+**website/urls.py**
+```
+from django.contrib import admin
+from django.urls import path
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('posts/', admin.site.urls),
+]
+
+```
+
+Inside ```urls.py``` file we have just copy pasted the already existing url and changed
+the string inside quotes to ```posts``` and if we run server 
+```python manage.py runserver``` and navigate to [127.0.0.1:8000/posts/](http://127.0.0.1:8000/posts/) we find that we arrived at the same admin page. This is because we haven't mapped 
+our url with the function based view ```posts_home(request)``` that we created.
+
+To map our url with that view we need to import our view and define it with url
+
+```
+...
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('posts/', posts_home, name='posts-home'),
+]
+```
+
+Run server and navigate to refresh the page and you should see the html response that 
+we returned from our **posts view**
+
+This makes sense right! We created a view then a url for that view and joined them 
+together and magic happens. We have our first MVC ready. The same way we will create the
+other views for our **CRUD** and individual urls for each view.
+
+You might be wondering that we didn't talked about the ```name``` argument. So let's talk 
+about it. ```django.urls.path``` has ```name``` argument that is very useful in cases
+when we want to denote our url so instead of completely writing our url 
+```http://127.0.0.1:8000/posts/``` like this we can simply use the name ```posts-home```
+
+We will dive into that later on.
