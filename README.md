@@ -372,3 +372,72 @@ here. And when using namespace we need to define an ```app_name``` variable insi
 app urls.
 
 Run the server again and everything remains same.
+
+All of this was for starting how to create a view and its url now we will actually create
+views and urls for CRUD operations
+
+Copy paste the posts_home view five times and make minor changes in them like changing the
+function name and the html response to distinguish each page in browser
+
+**posts/views.py**
+```
+from django.shortcuts import render
+from django.http import HttpResponse
+
+def post_create(request):
+	return HttpResponse("<h1>Create view</h1>")
+
+
+def post_detail(request):
+	return HttpResponse("<h1>Detail view</h1>")
+
+
+def post_update(request):
+	return HttpResponse("<h1>Update view</h1>")
+
+
+def post_list(request):
+	return HttpResponse("<h1>List view</h1>")
+
+
+def post_delete(request):
+	return HttpResponse("<h1>Delete view</h1>")
+
+```
+
+Similarly import each view into urls and create url for each one
+
+```
+from django.urls import path
+
+from posts.views import (
+	post_create,
+	post_detail,
+	post_update,
+	post_list,
+	post_delete,
+)
+
+app_name = 'posts'
+
+urlpatterns = [
+	path('create/', post_create, name='posts-home'),
+	path('detail/', post_detail, name='posts-detail'),
+	path('update/', post_update, name='posts-update'),
+	path('list/', post_list, name='posts-list'),
+	path('delete/', post_delete, name='posts-delete'),
+]
+```
+
+Run the server and if everything goes right we should have these urls ready
+
+1. [CREATE VIEW](http://127.0.0.1:8000/posts/create/)
+2. [UPDATE VIEW](http://127.0.0.1:8000/posts/update/)
+3. [DELETE VIEW](http://127.0.0.1:8000/posts/delete/)
+4. [LIST VIEW](http://127.0.0.1:8000/posts/list/)
+5. [DETAIL VIEW](http://127.0.0.1:8000/posts/detail/)
+
+Each of the url should display the returned ```HttpResponse```
+
+Change urls, create more views, make same urls and change their orders and see what 
+happens, the more you edit and write code yourself the more you will understand the django
