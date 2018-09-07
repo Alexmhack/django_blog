@@ -330,3 +330,45 @@ when we want to denote our url so instead of completely writing our url
 ```http://127.0.0.1:8000/posts/``` like this we can simply use the name ```posts-home```
 
 We will dive into that later on.
+
+So we have created our first url but we want to keep the **urls** for posts app in the app
+itself so that our app is reusable and it comes under good practise.
+
+Create a new file named ```urls.py``` inside posts app and paste the code from 
+```website/urls.py```
+
+**posts/urls.py**
+```
+from django.urls import path
+
+from posts.views import posts_home
+
+app_name = 'posts'
+
+urlpatterns = [
+    path('posts/', posts_home, name='posts-home'),
+]
+
+```
+
+We just need to remove the admin url and its import because we don't need it here.
+
+```
+from django.urls import path
+
+from posts.views import posts_home
+
+app_name = 'posts'
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('posts/', posts_home, name='posts-home'),
+]
+
+```
+
+We use [namespace](https://docs.djangoproject.com/en/2.1/topics/http/urls/#url-namespaces)
+here. And when using namespace we need to define an ```app_name``` variable inside the 
+app urls.
+
+Run the server again and everything remains same.
