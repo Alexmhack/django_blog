@@ -440,4 +440,105 @@ Run the server and if everything goes right we should have these urls ready
 Each of the url should display the returned ```HttpResponse```
 
 Change urls, create more views, make same urls and change their orders and see what 
-happens, the more you edit and write code yourself the more you will understand the django
+happens, the more you edit and write code yourself the more you will understand the 
+django
+
+# Django Templates
+
+Open the project settings -- ```website/settings.py``` and go to
+
+```
+...
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
+```
+
+In ```'DIRS': []``` we need to add the path for our templates which will be in the root 
+path so in the list we will add,
+
+```
+	...
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+    ...
+```
+
+Here ```BASE_DIR``` refers to the root project location which basically is the path
+where ```manage.py``` file lies and ```'templates'``` is the folder name
+
+**Where Does BASE_DIR Come From ?**
+
+If you look at the ```settings.py``` file again at the top
+
+```
+import os
+
+# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+...
+```
+
+The Value is already assigned to ```BASE_DIR``` that generates the root location of 
+django project automatically for us. If we change the project location then too our 
+project would work because the location is not hardcoded here.
+
+For more info on ```os``` module visit [docs](https://docs.python.org/3/library/os.html)
+
+There is another way to render templates folder without specifying its settings, if you
+are interested in that one be sure to contact me at [CodeMentor](http://codementor.tk)
+
+Okay, Let's create the templates folder inside project root directory and inside 
+**templates** create another file named ```index.html``` and put in some html in there.
+
+```
+├───posts
+│   ├───migrations
+│   │   └───__pycache__
+│   └───__pycache__
+├───templates
+└───website
+    └───__pycache__
+    manage.py
+    db.sqlite3
+```
+
+**index.html**
+```
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Django Blog</title>
+</head>
+<body>
+
+	<h1>Django Templates On Duty</h1>
+
+</body>
+</html>
+```
+
+Now we need to tell django view to look for our template when rendering the webpage
+
+**posts/views.py**
+```
+...
+def post_list(request):
+	return render(request, 'index.html', {})
+...
+```
+
+Run the server again and locate to the [127.0.0.1:8000/posts/list](http://127.0.0.1:8000/posts/list) and you should see the html that exists in the template.
