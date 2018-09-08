@@ -14,7 +14,7 @@ def post_update(request):
 
 
 def post_list(request):
-	return HttpResponse("<h1>List view</h1>")
+	return render(request, 'index.html', {})
 
 
 def post_delete(request):
