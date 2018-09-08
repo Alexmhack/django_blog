@@ -542,3 +542,8 @@ def post_list(request):
 ```
 
 Run the server again and locate to the [127.0.0.1:8000/posts/list](http://127.0.0.1:8000/posts/list) and you should see the html that exists in the template.
+
+We used the **render** function that took **request**, **template** and a **dictionary**
+. We will use the dictionary or more specifically context later on..
+
+![Django and Python](https://www.google.co.in/imgres?imgurl=https%3A%2F%2Fcdn-images-1.medium.com%2Fmax%2F1600%2F1*u_Jr6FozmyMCi3pe9ZsoFg.png&imgrefurl=https%3A%2F%2Fhackernoon.com%2Ftop-10-python-django-web-application-development-companies-eda8461c764f&docid=sFIjrP06B4JoRM&tbnid=RCSTG2HpS6r8fM%3A&vet=10ahUKEwiC9Pvn2KrdAhULXn0KHRnZAQ0QMwiGASgEMAQ..i&w=1280&h=720&bih=651&biw=1366&q=django%20images&ved=0ahUKEwiC9Pvn2KrdAhULXn0KHRnZAQ0QMwiGASgEMAQ&iact=mrc&uact=8)
