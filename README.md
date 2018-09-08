@@ -545,3 +545,43 @@ Run the server again and locate to the [127.0.0.1:8000/posts/list](http://127.0.
 
 We used the **render** function that took **request**, **template** and a **dictionary**
 . We will use the dictionary or more specifically context later on..
+
+## Templates And Context
+context is something that we can pass through our view function and display it in our
+view template so basically what I mean is 
+
+```
+...
+def post_list(request):
+	context = {
+		'title': 'django page'
+	}
+	return render(request, 'index.html', context)
+```
+
+We make a **dictionary** _(simple python dict)_ with a key and value pair and then we 
+```return render``` with third argument as our context dict
+
+To use the context variable we send in template we need to use ```{{ <context_key> }}```
+in template
+
+**index.html**
+```
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Django Blog</title>
+</head>
+<body>
+
+	<h1>Django Templates On Duty</h1>
+	{{ title }}
+
+</body>
+</html>
+```
+
+Refresh the page again and you should see the **value** of **title** from context 
+displayed under H1 tag.
+
+# Django Querysets
