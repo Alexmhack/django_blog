@@ -14,7 +14,10 @@ def post_update(request):
 
 
 def post_list(request):
-	return render(request, 'index.html', {})
+	context = {
+		'title': 'django page'
+	}
+	return render(request, 'index.html', context)
 
 
 def post_delete(request):
