@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 
 from .models import Post
@@ -7,8 +7,12 @@ def post_create(request):
 	return HttpResponse("<h1>Create view</h1>")
 
 
-def post_detail(request):
-	return HttpResponse("<h1>Detail view</h1>")
+def post_detail(request, id):
+	object = get_object_or_404(id=id)
+	context = {
+		'object': object
+	}
+	return render(request, 'posts/detail.html', context)
 
 
 def post_update(request):
@@ -21,7 +25,7 @@ def post_list(request):
 		'title': 'django page',
 		'queryset': queryset
 	}
-	return render(request, 'index.html', context)
+	return render(request, 'posts/list.html', context)
 
 
 def post_delete(request):
