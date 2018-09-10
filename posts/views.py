@@ -8,7 +8,7 @@ def post_create(request):
 
 
 def post_detail(request, id):
-	object = get_object_or_404(id=id)
+	object = get_object_or_404(Post, id=id)
 	context = {
 		'object': object
 	}
