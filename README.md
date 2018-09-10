@@ -585,3 +585,146 @@ Refresh the page again and you should see the **value** of **title** from contex
 displayed under H1 tag.
 
 # Django Querysets
+Before starting to display our the posts saved in our database onto the views we will be
+handling the posts objects and querysets from the django shell itself
+
+**django Shell**
+```
+python manage.py shell
+```
+
+This shell is a lot different from a python interpreter
+
+```
+Python 3.6.5 (v3.6.5:f59c0932b4, Mar 28 2018, 17:00:18) [MSC v.1900 64 bit (AMD64)]
+Type 'copyright', 'credits' or 'license' for more information
+IPython 6.4.0 -- An enhanced Interactive Python. Type '?' for help.
+
+In [1]:
+```
+
+We can tinker with our database directly from the python shell 
+
+```
+In [1]: from posts.models import Post
+
+In [2]: Post.objects.all()
+Out[2]: <QuerySet [<Post: first post>, <Post: django post>]>
+
+In [3]: Post.objects.get(title__icontains='django')
+Out[3]: <Post: django post>
+
+In [4]: Post.objects.create(title='New Post From Shell', content='POst')
+Out[4]: <Post: New Post From Shell>
+
+In [5]:
+```
+
+There are [lots](https://docs.djangoproject.com/en/2.1/ref/django-admin/#shell) of shell commands
+
+Using the Django Docs you can practise the commands inside the django shell
+
+## Queryset Views
+In this section we will be displaying the data from backend onto the views.
+
+**posts/views.py**
+```
+def post_list(request):
+	queryset = Post.objects.all()
+	context = {
+		'title': 'django page',
+		'queryset': queryset
+	}
+	return render(request, 'index.html', context)
+
+```
+
+And since we have passed our queryset in the context variable we just need
+
+**templates/index.html**
+```
+<h3>{{ queryset }}</h3>
+```
+
+Run server and go to [http://127.0.0.1:8000/posts/list](http://127.0.0.1:8000/posts/list)
+And you should see the queryset printed but what we want is more specific data so for that
+
+**index.html**
+```
+
+	<h1>Django Templates On Duty</h1>
+	{% for obj in queryset %}
+		
+		<ul>
+			<li>
+				<h3>{{ obj.title }}</h3>
+				<li>{{ obj.content }}</li>
+				<li>{{ obj.timestamp }}</li>
+			</li>
+
+		</ul>
+
+	{% endfor %}
+
+```
+
+Above we run a **for** loop using **template tags** in django and using **dot notation**
+
+## Post Detail View
+We will be fetching the post details using the ```id``` attribute and for that we will
+be using ```get_object_or_404```
+
+**posts/views.py**
+```
+from django.shortcuts import render, get_object_or_404
+
+...
+def post_detail(request, id):
+	object = get_object_or_404(Post, id=id)
+	context = {
+		'object': object
+	}
+	return render(request, 'posts/detail.html', context)
+```
+
+Notice the path for our template says ```detail.html``` file in **posts** folder
+
+So create a folder named **posts** inside **templates** and create new file inside 
+**posts** named ```detail.html```
+
+**posts/detail.html**
+```
+<h1>Django Templates On Duty</h1>
+		
+		<ul>
+			<li>
+				<h3>{{ object.title }}</h3>
+				<li>{{ object.content }}</li>
+				<li>{{ object.timestamp }}</li>
+				<li>{{ object.id }}</li>
+			</li>
+
+		</ul>
+```
+
+And since we changed our view to include a ```id``` argument we need to change our urls
+
+**posts/urls.py**
+```
+urlpatterns = [
+	path('create/', post_create, name='posts-home'),
+	path('detail/<int:id>', post_detail, name='posts-detail'),
+	path('update/', post_update, name='posts-update'),
+	path('list/', post_list, name='posts-list'),
+	path('delete/', post_delete, name='posts-delete'),
+]
+
+```
+
+```'detail/<int:id>'``` url catches the number given in url in browser and our view function
+catched that number as id and gets the object
+
+**run the server** and visit to ...detail/1 url and you should see the details of the post
+however if we visit to any non-existing id for example ...detail/10 we get a 
+**Page Not Found** error and it makes sense right we don't wanna be showing posts details 
+that doesn't exists so all of this is automatically done by ```get_object_or_404```
