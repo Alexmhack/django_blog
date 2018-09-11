@@ -3,7 +3,7 @@
 		{% for obj in queryset %}
 
 			<li>
-				<h3><a href="{% url 'posts:posts-detail' obj.id %}">{{ obj.title }}</a></h3>
+				<h3><a href="{{ obj.get_absolute_url }}">{{ obj.title }}</a></h3>
 				<li>{{ obj.content }}</li>
 				<li>{{ obj.timestamp }}</li>
 			</li>
