@@ -1,13 +1,13 @@
 <h1>Django Templates On Duty</h1>
-	{% for obj in queryset %}
-		
-		<ul>
+	<ul>
+		{% for obj in queryset %}
+
 			<li>
-				<h3>{{ obj.title }}</h3>
+				<h3><a href="{% url 'posts:posts-detail' obj.id %}">{{ obj.title }}</a></h3>
 				<li>{{ obj.content }}</li>
 				<li>{{ obj.timestamp }}</li>
 			</li>
 
-		</ul>
-
-	{% endfor %}
+		{% endfor %}
+	
+	</ul>
