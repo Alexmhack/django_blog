@@ -724,7 +724,86 @@ urlpatterns = [
 ```'detail/<int:id>'``` url catches the number given in url in browser and our view function
 catched that number as id and gets the object
 
-**run the server** and visit to ...detail/1 url and you should see the details of the post
-however if we visit to any non-existing id for example ...detail/10 we get a 
-**Page Not Found** error and it makes sense right we don't wanna be showing posts details 
-that doesn't exists so all of this is automatically done by ```get_object_or_404```
+**run the server** and visit to ...detail/1 url and you should see the details of the
+post however if we visit to any non-existing id for example ...detail/10 we get a 
+**Page Not Found** error and it makes sense right we don't wanna be showing posts 
+details that doesn't exists so all of this is automatically done by 
+```get_object_or_404```
+
+## Dynamic url routing
+We need to enable one more nice feature which is to add urls for detail view for
+each post in list of posts. For that we need to add a url with the ```id``` argument
+
+```
+<h1>Django Templates On Duty</h1>
+	<ul>
+		{% for obj in queryset %}
+
+			<li>
+				<h3><a href="{% url 'posts:posts-detail' obj.id %}">{{ obj.title }}</a></h3>
+				<li>{{ obj.content }}</li>
+				<li>{{ obj.timestamp }}</li>
+			</li>
+
+		{% endfor %}
+	
+	</ul>
+
+```
+
+If you just use ```<a href="{% url 'posts-detail' obj.id %}">``` then we would get
+no function or pattern name exists error, this error is because we have added a app_name
+and namespace in urls which needs to be added with each url.
+
+One more thing we can do to reduce some of the url hassel is to remove the extra 
+```posts-``` from url names
+
+**posts/urls.py**
+```
+urlpatterns = [
+	path('create/', post_create, name='home'),
+	path('<int:id>/', post_detail, name='detail'),
+	path('update/', post_update, name='update'),
+	path('list/', post_list, name='list'),
+	path('delete/', post_delete, name='delete'),
+]
+
+```
+
+This makes sense right cause we will be using the namespace before each name to denote
+the url like
+
+**posts/models.py**
+```
+	...
+	def get_absolute_url(self):
+		return reverse('posts:detail', args=[self.id])
+
+```
+
+Okay so what is ```get_absolute_url``` method and ```return reverse...```
+
+Django has ```reverse``` object in ```django.urls``` which takes in the view or pattern 
+name and any parameters and returns the url for that view so we make use of this 
+function inside our templates 
+
+**posts/list.html**
+```
+<h1>Django Templates On Duty</h1>
+	<ul>
+		{% for obj in queryset %}
+
+			<li>
+				<h3><a href="{{ obj.get_absolute_url }}">{{ obj.title }}</a></h3>
+				<li>{{ obj.content }}</li>
+				<li>{{ obj.timestamp }}</li>
+			</li>
+
+		{% endfor %}
+	
+	</ul>
+
+```
+
+This makes our dynamic urls more shorter and we don't have to specify the id and 
+namespace each time.
