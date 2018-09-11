@@ -6,6 +6,9 @@ from .forms import PostModelForm
 
 def post_create(request):
 	form = PostModelForm(request.POST or None)
+	if form.is_valid():
+		instance = form.save(commit=False)
+		instance.save()
 	context = {
 		'form': form
 	}
