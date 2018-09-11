@@ -2,9 +2,14 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 
 from .models import Post
+from .forms import PostModelForm
 
 def post_create(request):
-	return HttpResponse("<h1>Create view</h1>")
+	form = PostModelForm()
+	context = {
+		'form': form
+	}
+	return render(request, 'posts/create.html', context)
 
 
 def post_detail(request, id):
