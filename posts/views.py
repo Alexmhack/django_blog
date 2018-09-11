@@ -5,7 +5,7 @@ from .models import Post
 from .forms import PostModelForm
 
 def post_create(request):
-	form = PostModelForm()
+	form = PostModelForm(request.POST or None)
 	context = {
 		'form': form
 	}
