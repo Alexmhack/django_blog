@@ -23,8 +23,12 @@ def post_detail(request, id):
 	return render(request, 'posts/detail.html', context)
 
 
-def post_update(request):
-	return HttpResponse("<h1>Update view</h1>")
+def post_update(request, id=None):
+	instance = get_object_or_404(Post, id=id)
+	context = {
+		'instance': instance
+	}
+	return render(request, "posts/update.html", context)
 
 
 def post_list(request):
