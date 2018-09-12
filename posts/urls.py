@@ -13,7 +13,7 @@ app_name = 'posts'
 urlpatterns = [
 	path('create/', post_create, name='home'),
 	path('<int:id>/', post_detail, name='detail'),
-	path('update/', post_update, name='update'),
+	path('<int:id>/update/', post_update, name='update'),
 	path('list/', post_list, name='list'),
 	path('delete/', post_delete, name='delete'),
 ]
