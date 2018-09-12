@@ -25,8 +25,13 @@ def post_detail(request, id):
 
 def post_update(request, id=None):
 	instance = get_object_or_404(Post, id=id)
+	form = PostModelForm(request.POST or None, instance=instance)
+	if form.is_valid():
+		instance = form.save(commit=False)
+		instance.save()
 	context = {
-		'instance': instance
+		'instance': instance,
+		'form': form
 	}
 	return render(request, "posts/update.html", context)
 
