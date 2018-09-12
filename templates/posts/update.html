@@ -3,7 +3,7 @@
 
 	<form action="." method="POST">
 		{% csrf_token %}
-		{{ isntance }}
+		{{ form.as_p }}
 		<input type="submit" value="Create">
 	</form>
 
