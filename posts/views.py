@@ -34,10 +34,9 @@ def post_update(request, id=None):
 	if form.is_valid():
 		instance = form.save(commit=False)
 		instance.save()
-		messages.success(request, "Saved")
+		messages.success(request, "Saved", extra_tags="button")
 		return HttpResponseRedirect(instance.get_absolute_url())
-	else:
-		messages.error(request, "Error Saving Post")
+
 	context = {
 		'instance': instance,
 		'form': form
