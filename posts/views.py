@@ -9,7 +9,7 @@ def post_create(request):
 	if form.is_valid():
 		instance = form.save(commit=False)
 		instance.save()
-		HttpResponseRedirect(instance.get_absolute_url)
+		return HttpResponseRedirect(instance.get_absolute_url)
 	context = {
 		'form': form
 	}
@@ -30,7 +30,7 @@ def post_update(request, id=None):
 	if form.is_valid():
 		instance = form.save(commit=False)
 		instance.save()
-		HttpResponseRedirect(instance.get_absolute_url)
+		return HttpResponseRedirect(instance.get_absolute_url())
 	context = {
 		'instance': instance,
 		'form': form
