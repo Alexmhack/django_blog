@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
+from django.contrib import messages
 
 from .models import Post
 from .forms import PostModelForm
@@ -9,7 +10,10 @@ def post_create(request):
 	if form.is_valid():
 		instance = form.save(commit=False)
 		instance.save()
+		messages.success(request, "Successfully Created")
 		return HttpResponseRedirect(instance.get_absolute_url)
+	else:
+		messages.error(request, "Not Successfully Created")
 	context = {
 		'form': form
 	}
@@ -30,7 +34,10 @@ def post_update(request, id=None):
 	if form.is_valid():
 		instance = form.save(commit=False)
 		instance.save()
+		messages.success(request, "Successfully Created")
 		return HttpResponseRedirect(instance.get_absolute_url())
+	else:
+		messages.error(request, "Not Successfully Created")
 	context = {
 		'instance': instance,
 		'form': form
