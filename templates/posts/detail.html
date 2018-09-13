@@ -1,27 +1,32 @@
-<h1>Django Templates On Duty</h1>
-		
-	{% if messages %}
-		<ul class="messages">
-		    {% for message in messages %}
-		    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
-				{% if "html_safe" in message.tags %}
-					{{ message|safe }}
-				{% else %}
-					{{ message }}
-				{% endif %}
-			</li>
-		    {% endfor %}
-		</ul>
-	{% endif %}
+{% extends "base.html" %}
 
-		
-		<ul>
-			<li>
-				<h3>{{ object.title }}</h3>
-				<li>{{ object.content }}</li>
-				<li>{{ object.timestamp }}</li>
-				<li>{{ object.id }}</li>
-			</li>
+{% block content %}
 
-		</ul>
+	<h1>Django Templates On Duty</h1>
+			
+		{% if messages %}
+			<ul class="messages">
+			    {% for message in messages %}
+			    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+					{% if "html_safe" in message.tags %}
+						{{ message|safe }}
+					{% else %}
+						{{ message }}
+					{% endif %}
+				</li>
+			    {% endfor %}
+			</ul>
+		{% endif %}
+
+			
+	<ul>
+		<li>
+			<h3>{{ object.title }}</h3>
+			<li>{{ object.content }}</li>
+			<li>{{ object.timestamp }}</li>
+			<li>{{ object.id }}</li>
+		</li>
+
+	</ul>
 		
+{% endblock %}
