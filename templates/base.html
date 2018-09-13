@@ -4,20 +4,11 @@
 	<title>Django Blog</title>
 </head>
 <body>
+	<h1>Django Blog</h1>
 
-	<h1>Django Templates On Duty</h1>
-	{% for obj in queryset %}
-		
-		<ul>
-			<li>
-				<h3>{{ obj.title }}</h3>
-				<li>{{ obj.content }}</li>
-				<li>{{ obj.timestamp }}</li>
-			</li>
+	{% block content %}
 
-		</ul>
-
-	{% endfor %}
+	{% endblock content %}
 
 </body>
 </html>
