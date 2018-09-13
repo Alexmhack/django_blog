@@ -807,3 +807,37 @@ function inside our templates
 
 This makes our dynamic urls more shorter and we don't have to specify the id and 
 namespace each time.
+
+# Django Static Files
+For serving static files locally we need to create a seperate folder as well as tell the 
+django settings about that folder
+
+**settings.py**
+```
+STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static')
+]
+
+```
+
+Since we have defined the location for static folder we need to create one **static** folder
+All of this comes from the django [docs](https://docs.djangoproject.com/en/2.1/howto/static-files/) for serving static files
+
+One more thing we need to do is give our urls the static which is useful when serving static
+files during development.
+
+**website/urls.py**
+```
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('posts/', include('posts.urls', namespace='posts')),
+]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+```
+
+We are doing this inside a if statement because we don't want to change settings everytime
+in development and production
